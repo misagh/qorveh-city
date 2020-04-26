@@ -11,3 +11,4 @@ Route::get('/post', function ()
 
 Auth::routes();
 
+Route::any('/posts/submit', 'PostController@submit')->name('posts.submit');
