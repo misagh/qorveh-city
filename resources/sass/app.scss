@@ -1,8 +1,56 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Pacifico');
 
-// Variables
+@font-face {
+    font-family: Vazir;
+    src: url("../fonts/Vazir-WOL.woff") format("woff");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Vazir;
+    src: url("../fonts/Vazir-Bold-WOL.woff") format("woff");
+    font-weight: bold;
+}
+
 @import 'variables';
+@import '~bootstrap-v4-rtl/scss/bootstrap-rtl';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: $light;
+    background: url("../img/bg.png");
+}
+
+.eng-font {
+    font-family: "Pacifico", sans-serif !important;
+    direction: ltr !important;
+}
+
+.shadow-sm-bold {
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
+.border-dash {
+    border-style: dotted !important;
+}
+
+.fa-ul {
+    list-style-type: none;
+    margin-right: 2em;
+    padding-left: 0;
+    margin-left: 0 !important;
+
+    .fa-li {
+        right: -2em;
+    }
+}
+
+footer {
+    width: 100%;
+    bottom: 0;
+}
