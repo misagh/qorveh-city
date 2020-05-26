@@ -6,28 +6,24 @@
             <div class="card p-3 border-0 shadow-sm-bold">
                 <div class="row">
                     <div class="col-12 text-center mb-4">
-                        <img class="img-fluid" alt="full size image" src="{{ asset('big-image.jpg') }}">
+                        <img class="img-fluid" alt="full size image" src="{{ $post->full_image }}">
                     </div>
                     <div class="col-12">
-                        <h1 class="font-weight-bold mb-4">عنوان تصویر</h1>
-                        <p>
-                            اگر شما یک طراح هستین و یا با طراحی های گرافیکی سروکار دارید به متن های برخورده اید که با نام لورم ایپسوم شناخته می‌شوند. لورم ایپسوم یا طرح‌نما (به انگلیسی: Lorem ipsum) متنی ساختگی و بدون معنی است که برای امتحان فونت و یا پر کردن فضا در یک طراحی گرافیکی و یا صنعت چاپ استفاده میشود. طراحان وب و گرافیک از این متن برای پرکردن صفحه و ارائه شکل کلی طرح استفاده می‌کنند.
-                        </p>
+                        <h1 class="font-weight-bold mb-4">{{ $post->title }}</h1>
+                        <p>{{ $post->body }}</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="card p-3 border-0 shadow-sm-bold mb-3">
-                <h5 class="font-weight-bold text-center">خالق اثر</h5>
+                <h5 class="font-weight-bold text-center">عکاس</h5>
                 <hr>
                 <div class="text-center">
-                    <a href=""><img class="rounded-circle img-thumbnail" width="150" alt="firstname lastname" src="{{ asset('avatar.jpg') }}"></a>
+                    <a href="{{ route('users.profile', $post->user_id) }}"><img class="rounded-circle img-thumbnail" width="150" alt="{{ $post->user->name }}" src="{{ $post->user->avatar }}"></a>
                 </div>
-                <h5 class="text-center my-4 font-weight-bold"><a class="text-dark" href="">نام و فامیل عکاس</a></h5>
-                <p>
-                    اگر شما یک طراح هستین و یا با طراحی های گرافیکی سروکار دارید به متن های برخورده اید که با نام لورم ایپسوم شناخته می‌شوند. لورم ایپسوم یا طرح‌نما (به انگلیسی: Lorem ipsum) متنی ساختگی و بدون معنی است که برای امتحان فونت و ی
-                </p>
+                <h5 class="text-center my-4 font-weight-bold"><a class="text-dark" href="">{{ $post->user->name }}</a></h5>
+                <p>{{ $post->user->bio }}</p>
             </div>
             <div class="card p-3 border-0 shadow-sm-bold mb-3">
                 <ul class="list-group list-group-flush px-0 fa-ul">

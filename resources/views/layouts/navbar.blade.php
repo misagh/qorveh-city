@@ -7,28 +7,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav ml-auto">
-                @if (empty($auth))
+                @auth
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">{{ __('ورود') }}</a>
+                        <a class="nav-link" href="{{ route('posts.submit') }}">{{ __('ارسال تصویر') }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">{{ __('ثبت نام') }}</a>
-                    </li>
-                @else
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ $auth->name }} <span class="caret"></span>
+                            {{ auth()->user()->name }} <span class="caret"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('users.profile', $auth->username) }}">{{ __('حساب کابری') }}</a>
+                            <a class="dropdown-item" href="{{ route('users.profile', auth()->id()) }}">{{ __('حساب کابری') }}</a>
                             <div class="dropdown-divider"></div>
-                            @if (is_admin($auth) || is_author($auth))
-                                <a class="dropdown-item" href="{{ route('articles.add') }}">{{ __('افزودن پست') }}</a>
-                            @endif
-                            @if (is_admin($auth))
-                                <a class="dropdown-item" href="{{ route('challenges.lists') }}">{{ __('ویرایش پست ها') }}</a>
-                                <div class="dropdown-divider"></div>
-                            @endif
                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 {{ __('خروج') }}
                             </a>
@@ -37,7 +26,14 @@
                             </form>
                         </div>
                     </li>
-                @endif
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('ورود') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">{{ __('ثبت نام') }}</a>
+                    </li>
+                @endauth
             </ul>
         </div>
     </div>

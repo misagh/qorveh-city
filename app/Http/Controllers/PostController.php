@@ -3,9 +3,22 @@
 namespace App\Http\Controllers;
 
 use Image;
+use App\Post;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class PostController extends Controller {
+
+    public function view($slug)
+    {
+        $post = (new Post)->where('slug', $slug)->where('verified', true)->first();
+
+        if (empty($post))
+        {
+            abort(404);
+        }
+
+        return view('posts.view', compact('post'));
+    }
 
     public function submit()
     {
@@ -30,6 +43,13 @@ class PostController extends Controller {
 
             $this->optimize($path, $thumb_path);
 
+            $data = request()->all();
+            $data['description'] = '';
+            $data['image'] = $file_name;
+            $data['slug'] = $this->getSlug($data['title']);
+
+            auth()->user()->posts()->create($data);
+
             session()->flash('success', 'تصویر شما با موفقیت ارسال شد و پس از بررسی در سایت منتشر خواهد شد.');
 
             return redirect()->back();
@@ -38,15 +58,39 @@ class PostController extends Controller {
         return view('posts.submit');
     }
 
-    public function optimize($path, $thumb_path)
+    private function getSlug($title)
     {
-        $img = Image::make($path)->fit(1920, 1080);
+        $slug = str_replace(['،', '"', ':', '-', ',', '!', '.', '|', '#', '%', '&', '*', '(', ')', '=', '_', '+', '/', '[', ']'], '', $title);
+        $slug = preg_replace('/\s+/', ' ', $slug);
+        $slug = str_replace(' ', '-', $slug);
+        $slug_last = (new Post)->where('slug', 'LIKE', $slug . '%')->orderByDesc('id')->first();
+
+        $index = null;
+
+        if (! empty($slug_last))
+        {
+            $slug_index = last(explode('-', $slug_last->slug));
+
+            $index = is_numeric($slug_index) ? $slug_index + 1 : 1;
+        }
+
+        return $slug . ($index ? '-' . $index : '');
+    }
+
+    private function optimize($path, $thumb_path)
+    {
+        $img = Image::make($path)->resize(1920, null, function ($constraint)
+        {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
 
         $img->save($path);
 
         $thumb = Image::make($path)->resize(500, null, function ($constraint)
         {
             $constraint->aspectRatio();
+            $constraint->upsize();
         });
 
         $thumb->save($thumb_path);
@@ -58,7 +102,7 @@ class PostController extends Controller {
         $this->convert($path, $path);
     }
 
-    public function convert($from, $to)
+    private function convert($from, $to)
     {
         $command = 'convert '
                    . $from

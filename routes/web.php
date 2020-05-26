@@ -4,11 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/post', function ()
-{
-    return view('posts.view');
-});
-
 Auth::routes();
 
-Route::any('/posts/submit', 'PostController@submit')->name('posts.submit');
+Route::any('/posts/submit', 'PostController@submit')->name('posts.submit')->middleware('auth');
+Route::any('/posts/view/{slug}', 'PostController@view')->name('posts.view');
+
+Route::any('/profile/{id}', 'UserController@profile')->name('users.profile');
